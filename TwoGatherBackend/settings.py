@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0kz#_axxi2vl8r2@uym%*t0)f_k*=a-@03xbyooro@vz#e-(u&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] #fixme se der problema de cors fala comigo
 
 
 # Application definition
@@ -81,12 +81,25 @@ WSGI_APPLICATION = 'TwoGatherBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv('PRODUCTION', '') == 'True': #fixme tem que configurar a DB aqui (obs, o os.getenv ta pegando do prodution.env nessa mesma pasta.) (obs2: isso é pra postgre.)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'PASSWORD': os.getenv('DB_PASS', ''),
+            'USER': os.getenv('DB_USER', ''),
+            'NAME': os.getenv('DB_NAME', ''),
+            'HOST': os.getenv('DB_HOST', ''),
+            'PORT': os.getenv('DB_PORT', '')
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation

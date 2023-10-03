@@ -1,0 +1,54 @@
+from django.db import models
+import uuid
+
+class Group(models.Model):
+    id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField('Title', max_length=128)
+    photo = models.TextField('Photo', blank=True, null=True)
+    description = models.TextField('Description', null=True, blank=True)
+    idAdmin = models.ForeignKey('user.user', on_delete=models.PROTECT)
+    isTransmission = models.BooleanField('Transmission', default=False)
+    isPrivate = models.BooleanField('Private', default=True)
+    archive = models.BooleanField('Archived', default=False)
+
+    participants = models.ManyToManyField(
+        'user.user',
+        verbose_name='participants',
+        related_name='participants',
+    )
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['title']
+        verbose_name_plural = "Groups"
+
+class Message(models.Model):
+    PRIORITY = (
+        (0, 'Normal'),
+        (1, 'Urgent'),
+    )
+    #MESSAGE_TYPE = (
+    #    (0, 'TBD'),
+    #)
+    id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False)
+    text = models.TextField('Message')
+    date = models.DateTimeField('Sent date', auto_now_add=True)
+    priority = models.CharField('Priority', max_length=255, choices=PRIORITY)
+    #messageType = models.CharField('Message Type', max_length=255, choices=MESSAGE_TYPE)
+    idSentBy = models.ForeignKey('user.user', on_delete=models.PROTECT)
+    idGroup = models.ForeignKey('group.group', on_delete=models.PROTECT)
+
+    readBy = models.ManyToManyField(
+        'user.user',
+        verbose_name='Read By',
+        related_name='readBy',
+        blank=True,
+    )
+    def __str__(self):
+        return self.text
+    
+    class Meta:
+        ordering = ['-date']
+        verbose_name_plural = "Messages"

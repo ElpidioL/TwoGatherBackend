@@ -5,8 +5,8 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-#domains=(api.rpgsands.com) #fixme se for usar o letsencrypt, tem que mudar o domain
-domains=(2gather.shinji.dev)
+domains=(api.rpgsands.com) #fixme se for usar o letsencrypt, tem que mudar o domain
+#domains=(hamtaro.cloud)
 rsa_key_size=4096
 data_path="./data/certbot"
 email="shinji.matsumoto.sh@gmail.com" # Adding a valid address is strongly recommended

@@ -10,7 +10,7 @@ import uuid
 class RoleListView(ListAPIView):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
 class RoleCreateView(CreateAPIView):
     serializer_class = RoleSerializer

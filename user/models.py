@@ -48,7 +48,7 @@ class User(AbstractUser):
     photo = models.TextField('Photo', null=True, blank=True)
     password = models.CharField('Password', max_length=255)
     description = models.TextField('Description', null=True, blank=True)
-    status = models.CharField('Escritório base', max_length=255, choices=STATUS)
+    status = models.IntegerField('status', choices=STATUS)
     lastActive = models.DateTimeField(null=True, blank=True)
     idRole = models.ForeignKey('user.Role', blank=True, null=True, on_delete=models.SET_NULL)
     isAdmin = models.BooleanField(default=False)

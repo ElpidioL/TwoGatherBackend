@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0kz#_axxi2vl8r2@uym%*t0)f_k*=a-@03xbyooro@vz#e-(u&
 DEBUG = True
 
 ALLOWED_HOSTS = ['*'] #fixme se der problema de cors fala comigo
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000','https://localhost:3000', 'http://rpgsands.com', 'https://rpgsands.com', 'http://www.rpgsands.com', 'https://www.rpgsands.com', 'http://localhost:19006', 'https://localhost:19006', 'http://127.0.0.1:8000', 'http://hamtaro.cloud', 'https://hamtaro.cloud'] #fixme, duvidoso... em production é um problema?
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",

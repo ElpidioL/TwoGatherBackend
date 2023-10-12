@@ -69,6 +69,3 @@ class UserRetrieveView(RetrieveAPIView):
         except Exception as e:
             raise Http404("User not found")
         
-
-
-        UserUpdateAdminView

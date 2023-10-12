@@ -21,6 +21,7 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.status = 1
         user.phone = "9999999999999"
+        user.isAdmin = True
         user.save()
         return user
 

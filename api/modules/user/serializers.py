@@ -29,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data['is_staff'] = True
         validated_data['is_superuser'] = True
         validated_data['is_active'] = True
+        validated_data['isAdmin'] = True
 
         return super(UserSerializer, self).create(validated_data)
     

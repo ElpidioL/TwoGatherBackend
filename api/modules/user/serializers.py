@@ -5,8 +5,7 @@ from django.contrib.auth.hashers import make_password
 class PublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['name', 'photo', 'description', 'idRole', 'lastActive']
-    
+        fields = ['id', 'name', 'email', 'phone', 'photo', 'description', 'idRole', 'lastActive', 'status']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

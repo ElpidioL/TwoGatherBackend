@@ -35,7 +35,7 @@ class Message(models.Model):
     id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False)
     text = models.TextField('Message')
     date = models.DateTimeField('Sent date', auto_now_add=True)
-    priority = models.CharField('Priority', max_length=255, choices=PRIORITY)
+    priority = models.IntegerField('Priority', choices=PRIORITY)
     #messageType = models.CharField('Message Type', max_length=255, choices=MESSAGE_TYPE)
     idSentBy = models.ForeignKey('user.user', on_delete=models.PROTECT)
     idGroup = models.ForeignKey('group.group', on_delete=models.PROTECT)

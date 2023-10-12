@@ -19,6 +19,8 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
+        user.status = 1
+        user.phone = "9999999999999"
         user.save()
         return user
 
@@ -45,6 +47,7 @@ class User(AbstractUser):
     id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('Name', max_length=64)
     email = models.EmailField('E-mail', max_length=128, unique=True)
+    phone = models.CharField('Telefone', max_length=128, unique=True, default=None)
     photo = models.TextField('Photo', null=True, blank=True)
     password = models.CharField('Password', max_length=255)
     description = models.TextField('Description', null=True, blank=True)
@@ -65,7 +68,6 @@ class User(AbstractUser):
     class Meta:
         ordering = ['name']
         verbose_name_plural = "Users"
-
 
 class Role(models.Model):
     id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False)

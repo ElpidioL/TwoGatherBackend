@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(api.rpgsands.com) #fixme se for usar o letsencrypt, tem que mudar o domain
+domains=(try.rpgsands.com) #fixme se for usar o letsencrypt, tem que mudar o domain
 #domains=(hamtaro.cloud)
 rsa_key_size=4096
 data_path="./data/certbot"

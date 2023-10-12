@@ -22,20 +22,14 @@ class RegisterView(APIView):
             return Response('User Created', status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#não deveria voltar toda as fields.
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = PublicUserSerializer
     permission_classes = [IsAuthenticated]
 
-#desativada
-class UserCreateView(CreateAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-class UserUpdateView(UpdateAPIView):
+class UserUpdateView(UpdateAPIView): #self update do user, apesar que pelas telas, não vamos usar.
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = PublicUserSerializer
     lookup_field = 'pk'
     permission_classes = [IsAuthenticated]
     def update(self, request, *args, **kwargs):
@@ -43,37 +37,38 @@ class UserUpdateView(UpdateAPIView):
         instance = self.request.user
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
-        
-        # Add custom logic before updating the object, if needed
-        # For example, perform some validation or log the update
-        
         self.perform_update(serializer)
-        
-        # Add custom logic after updating the object, if needed
-        # For example, send a custom response or perform additional actions
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UserUpdateAdminView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = PublicUserSerializer
+    lookup_field = 'pk'
+    permission_classes = [IsAuthenticated, isAdmin]
 
 class UserRetrieveView(RetrieveAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = PublicUserSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
-        #user = self.kwargs.get('user')
-        #if '@' in user:
-        #    query =Q(email=user)
-        #elif '-' in user:
-        #    try:
-        #        query = Q(id=uuid.UUID(user))
-        #    except:
-        #        pass
-        #else:
-        #    raise Http404("User not found")
+        user = self.kwargs.get('user')
+        if '@' in user:
+            query =Q(email=user)
+        elif '-' in user:
+            try:
+                query = Q(id=uuid.UUID(user))
+            except:
+                pass
+        else:
+            raise Http404("User not found")
 
-        #try:
-        #    user = self.queryset.get(query)
-        #    return user
-        #except Exception as e:
-        #    raise Http404("User not found")
+        try:
+            user = self.queryset.get(query)
+            return user
+        except Exception as e:
+            raise Http404("User not found")
+        
+
+
+        UserUpdateAdminView

@@ -2,6 +2,8 @@ from django.db.models import Q
 from django.http import Http404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework import status
 from api.modules.group.serializers import GroupSerializer
 from group.models import Group
 from user.models import User
@@ -11,6 +13,11 @@ class GroupListView(ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        groups = self.queryset.filter(participants__id=request.user.pk)
+        serializer = self.serializer_class(groups, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class GroupCreateView(CreateAPIView):
     serializer_class = GroupSerializer

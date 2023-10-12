@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from api.modules.message.serializers import MessageSerializer
-from group.models import Message
+from group.models import Message, Group
 from user.models import User
 import uuid
 from rest_framework.response import Response
@@ -15,12 +15,9 @@ class MessageListView(APIView):
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        messages = self.queryset.all()
-        serializer = self.serializer_class(messages, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request, format=None):
+        user_groups = Group.objects.filter(participants__id=request.user.pk)
+
         idSentBy = self.request.POST.get('idSentBy')
         idGroup =  self.request.POST.get('idGroup')
 
@@ -33,9 +30,9 @@ class MessageListView(APIView):
             if idGroup:
                 query &= Q(idGroup=uuid.UUID(idGroup))
         except Exception as e:
-            raise HttpResponseBadRequest("UUID not valid")
+            return HttpResponseBadRequest("UUID not valid")
 
-        messages = self.queryset.filter(query)
+        messages = self.queryset.filter(query, idGroup__in=user_groups)
         serializer = self.serializer_class(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

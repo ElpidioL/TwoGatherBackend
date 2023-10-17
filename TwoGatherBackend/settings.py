@@ -126,9 +126,8 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    STATICFILES_DIRS = [BASE_DIR / 'static']
 
-
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = 'static/'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

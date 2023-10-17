@@ -117,6 +117,7 @@ if os.getenv('PRODUCTION', '') == 'True': #fixme tem que configurar a DB aqui (o
             'PORT': os.getenv('DB_PORT', '')
         }
     }
+    STATIC_ROOT = BASE_DIR / 'static'
 
 else:
     DATABASES = {

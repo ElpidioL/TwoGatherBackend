@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0kz#_axxi2vl8r2@uym%*t0)f_k*=a-@03xbyooro@vz#e-(u&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*'] #fixme se der problema de cors fala comigo
 CORS_ORIGIN_ALLOW_ALL = True
@@ -117,8 +117,7 @@ if os.getenv('PRODUCTION', '') == 'True': #fixme tem que configurar a DB aqui (o
             'PORT': os.getenv('DB_PORT', '')
         }
     }
-    STATIC_URL = '/static/'
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = BASE_DIR / 'static'
 
 else:
     DATABASES = {
@@ -127,8 +126,10 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
+STATIC_URL = 'static/'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

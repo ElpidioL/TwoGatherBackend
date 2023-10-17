@@ -10,6 +10,7 @@ djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
 psycopg2 = "*"
 django = "==4.1"
+sentry-sdk = "*"
 
 [dev-packages]
 

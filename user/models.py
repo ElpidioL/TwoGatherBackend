@@ -58,7 +58,6 @@ class User(AbstractUser):
     isAdmin = models.BooleanField(default=False)
     
     username = None
-    last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

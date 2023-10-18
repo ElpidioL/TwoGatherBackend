@@ -10,7 +10,7 @@ services:
       - "443:443"
     env_file:
       - "TwoGatherBackend/production.env"
-    command: bash -c "py manage.py migrate && gunicorn TwoGatherBackend.wsgi -b 0.0.0.0 -w 4 --log-level debug --capture-output --access-logfile /var/log/gunicorn_access.log --error-logfile /var/log/gunicorn_error.log"
+    command: bash -c "python manage.py migrate && gunicorn TwoGatherBackend.wsgi -b 0.0.0.0 -w 4 --log-level debug --capture-output --access-logfile /var/log/gunicorn_access.log --error-logfile /var/log/gunicorn_error.log"
     volumes:
       - ./media:/usr/src/app/media
       - ./logs:/var/log

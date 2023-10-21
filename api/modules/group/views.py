@@ -15,7 +15,7 @@ class GroupListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        groups = self.queryset.filter(participants__id=request.user.pk, archive=False, transmission=False)
+        groups = self.queryset.filter(participants__id=request.user.pk, archive=False, isTransmission=False)
         serializer = self.serializer_class(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -25,7 +25,7 @@ class GroupOnlyListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        groups = self.queryset.filter(participants__id=request.user.pk, archive=False, transmission=False, isPrivate=False)
+        groups = self.queryset.filter(participants__id=request.user.pk, archive=False, isTransmission=False, isPrivate=False)
         serializer = self.serializer_class(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -19,13 +19,23 @@ class GroupListView(ListAPIView):
         serializer = self.serializer_class(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GroupOnlyListView(ListAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        groups = self.queryset.filter(participants__id=request.user.pk, archive=False, transmission=False, isPrivate=False)
+        serializer = self.serializer_class(groups, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class GroupArchivedListView(ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        groups = self.queryset.filter(participants__id=request.user.pk, archive=True)
+        groups = self.queryset.filter(participants__id=request.user.pk, archive=True, isPrivate=False)
         serializer = self.serializer_class(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     

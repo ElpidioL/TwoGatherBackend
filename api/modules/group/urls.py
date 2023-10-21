@@ -1,10 +1,11 @@
 from django.urls import path
 
-from api.modules.group.views import GroupListView, GroupArchivedListView, GroupCreateView, GroupUpdateView, GroupRetrieveView, GroupUpdateAddParticipantView, GroupUpdateRemoveParticipantView, GroupTransmissionListView
+from api.modules.group.views import GroupListView, GroupArchivedListView, GroupCreateView, GroupUpdateView, GroupRetrieveView, GroupUpdateAddParticipantView, GroupUpdateRemoveParticipantView, GroupTransmissionListView, GroupOnlyListView
 
 urlpatterns = [
     path("<uuid:pk>", GroupRetrieveView.as_view(), name="group_info"),
     path("list/", GroupListView.as_view(), name="group_list"),
+    path("list/groups/", GroupOnlyListView.as_view(), name="group_only_list"),
     path("list/archived/", GroupArchivedListView.as_view(), name="group_transmission_list"),
     path("list/transmission/", GroupTransmissionListView.as_view(), name="group_archived_list"),
     path("create/", GroupCreateView.as_view(), name="group_create"),

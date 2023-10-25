@@ -5,6 +5,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        token['id'] = user.id
         token['name'] = user.name
         token['email'] = user.email
         token['phone'] = user.phone
@@ -18,6 +19,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
+        data['id'] = self.user.id
         data['name'] = self.user.name
         data['email'] = self.user.email
         data['phone'] = self.user.phone

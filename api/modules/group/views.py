@@ -1,13 +1,12 @@
-from django.db.models import Q
-from django.http import Http404
+from django.http import HttpResponseBadRequest
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from api.modules.group.serializers import GroupSerializer
 from group.models import Group
 from user.models import User
-import uuid
 
 class GroupListView(ListAPIView):
     queryset = Group.objects.all()
@@ -63,6 +62,30 @@ class GroupRetrieveView(RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated]
+
+class GroupPrivateGetOrCreateAPIView(APIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        try:
+            idPartner = User.objects.get(id=request.data.get('idPartner'))
+        except:
+            return HttpResponseBadRequest("Partner not found")
+
+        if idPartner and request.data.get('idSelf') == str(request.user.id) and idPartner.id != request.user.id:
+            group, created = Group.objects.get_or_create(
+                isPrivate = True, 
+                title = ''.join(sorted(f"{request.user.id}+{idPartner.id}")),
+                defaults={'idAdmin': request.user}
+            )
+            if created:
+                group.participants.set([request.user, idPartner])
+            serializer = GroupSerializer(group)
+            return Response(serializer.data, status=200)
+        else:
+            return HttpResponseBadRequest("Invalid request")
 
 class GroupUpdateAddParticipantView(UpdateAPIView):
     queryset = Group.objects.all()

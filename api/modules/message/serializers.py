@@ -1,5 +1,4 @@
 from group.models import Message
-from user.serializers import PublicUserSerializer
 from rest_framework import serializers
 
 class MessageSerializer(serializers.ModelSerializer):

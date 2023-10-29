@@ -18,8 +18,8 @@ class MessageListView(APIView):
     def post(self, request, format=None):
         user_groups = Group.objects.filter(participants__id=request.user.pk)
 
-        idSentBy = self.request.POST.get('idSentBy')
-        idGroup =  self.request.POST.get('idGroup')
+        idSentBy = request.data.get('idSentBy')
+        idGroup =  request.data.get('idGroup')
 
         query = Q()
         if not idSentBy and not idGroup:

@@ -31,7 +31,7 @@ class MessageListView(APIView):
                 query &= Q(idGroup=uuid.UUID(idGroup))
         except Exception as e:
             return HttpResponseBadRequest("UUID not valid")
-
+        
         messages = self.queryset.filter(query, idGroup__in=user_groups)
         serializer = self.serializer_class(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

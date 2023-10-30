@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 class PublicUserSerializer(serializers.ModelSerializer):
+    roleName = serializers.StringRelatedField(source='idRole.name')
     class Meta:
         model = User
         fields = ['id', 'name', 'email', 'phone', 'photo', 'description', 'idRole', 'lastActive', 'status']

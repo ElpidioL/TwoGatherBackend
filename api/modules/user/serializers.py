@@ -6,7 +6,7 @@ class PublicUserSerializer(serializers.ModelSerializer):
     roleName = serializers.StringRelatedField(source='idRole.name')
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'phone', 'photo', 'description', 'idRole', 'lastActive', 'status']
+        fields = ['id', 'name', 'email', 'phone', 'photo', 'description', 'idRole', 'roleName','lastActive', 'status']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

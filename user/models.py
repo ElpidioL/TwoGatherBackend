@@ -56,6 +56,7 @@ class User(AbstractUser):
     lastActive = models.DateTimeField(null=True, blank=True)
     idRole = models.ForeignKey('user.Role', blank=True, null=True, on_delete=models.SET_NULL)
     isAdmin = models.BooleanField(default=False)
+    pke = models.CharField('pke', max_length=128, unique=True, blank=True, null=True)
     
     username = None
     USERNAME_FIELD = 'email'

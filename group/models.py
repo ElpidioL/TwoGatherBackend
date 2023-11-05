@@ -40,6 +40,8 @@ class Message(models.Model):
     idSentBy = models.ForeignKey('user.user', on_delete=models.PROTECT)
     idGroup = models.ForeignKey('group.group', on_delete=models.PROTECT)
 
+    pkeSentBy = models.CharField('pke', max_length=128, blank=True, null=True)
+
     readBy = models.ManyToManyField(
         'user.user',
         verbose_name='Read By',

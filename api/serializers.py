@@ -15,6 +15,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['lastActive'] = user.lastActive
         token['role'] = user.idRole.name if user.idRole else ''
         token['isAdmin'] = user.isAdmin
+        token['pke'] = user.pke
         return token
 
     def validate(self, attrs):
@@ -29,4 +30,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['lastActive'] = self.user.lastActive
         data['role'] = self.user.idRole.name if self.user.idRole else ''
         data['isAdmin'] = self.user.isAdmin
+        data['pke'] = self.user.pke
         return data

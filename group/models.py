@@ -37,8 +37,8 @@ class Message(models.Model):
     idSentBy = models.ForeignKey('user.user', on_delete=models.PROTECT)
     idGroup = models.ForeignKey('group.group', on_delete=models.PROTECT)
 
-    pkeSentBy = models.CharField('pke', max_length=128, blank=True, null=True)
-    pkeReceiver = models.CharField('pke', max_length=128, blank=True, null=True)#this is not going to work for group chats.
+    pkeSentBy = models.CharField('pke Sent By', max_length=128, blank=True, null=True)
+    pkeReceiver = models.CharField('pke Receiver', max_length=128, blank=True, null=True)#this is not going to work for group chats.
 
     readBy = models.ManyToManyField(
         'user.user',

@@ -47,7 +47,17 @@ class GroupTransmissionListView(ListAPIView):
         groups = self.queryset.filter(participants__id=request.user.pk, isTransmission=True, archive=False)
         serializer = self.serializer_class(groups, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class GroupTransmissionAdminListView(ListAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request, format=None):
+        groups = self.queryset.filter(idAdmin=request.user.pk, isTransmission=True)
+        serializer = self.serializer_class(groups, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class GroupCreateView(CreateAPIView):
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated]

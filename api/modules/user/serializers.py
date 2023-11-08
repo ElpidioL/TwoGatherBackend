@@ -25,12 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Not unique email")
         
         validated_data['password'] = make_password(validated_data['password'])
-
-        #remove this on deploy.
-        validated_data['is_staff'] = True
-        validated_data['is_superuser'] = True
         validated_data['is_active'] = True
-        validated_data['isAdmin'] = True
 
         return super(UserSerializer, self).create(validated_data)
-    

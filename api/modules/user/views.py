@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.http import Http404
 from django.http import HttpResponse
+from django.contrib.auth.hashers import check_password, make_password
 
 from rest_framework import status
 from rest_framework.views import APIView
@@ -69,3 +70,24 @@ class UserRetrieveView(RetrieveAPIView):
         except Exception as e:
             raise Http404("User not found")
         
+class UserUpdatePasswordView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'pk'
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.request.user
+            old_password = self.request.data.get('old_password')
+            new_password = self.request.data.get('password')
+
+            if old_password and new_password and check_password(old_password, instance.password):
+                instance.set_password(new_password) 
+                instance.save()
+                return Response({"detail": "Password updated successfully."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "Invalid old password or new password not provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"detail": "An error occurred while processing your request."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

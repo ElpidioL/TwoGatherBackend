@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class MessageListView(APIView):
-    queryset = Message.objects.all()
+    queryset = Message.objects.select_related('idGroup').all()
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
 
@@ -33,6 +33,13 @@ class MessageListView(APIView):
             return HttpResponseBadRequest("UUID not valid")
         
         messages = self.queryset.filter(query, idGroup__in=user_groups)
+
+        messagesNotSeen = messages.filter(~Q(readBy=request.user.pk))      
+
+        for msg in messagesNotSeen:
+            msg.readBy.add(request.user.pk)      
+
+
         serializer = self.serializer_class(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

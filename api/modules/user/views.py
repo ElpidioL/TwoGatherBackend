@@ -24,9 +24,14 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserListView(ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(status=1)
     serializer_class = PublicUserSerializer
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        users = self.queryset.filter(~Q(id=request.user.pk))
+        serializer = self.serializer_class(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserUpdateView(UpdateAPIView): #self update do user, apesar que pelas telas, não vamos usar.
     queryset = User.objects.all()

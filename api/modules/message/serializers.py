@@ -1,9 +1,11 @@
 from group.models import Message
+from user.models import User
 from rest_framework import serializers
 
 class MessageSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='idSentBy.name')
     readByAll = serializers.SerializerMethodField(read_only=True)
+    readBy = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
 
     class Meta:
         model = Message

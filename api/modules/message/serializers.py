@@ -6,6 +6,7 @@ class MessageSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='idSentBy.name')
     readByAll = serializers.SerializerMethodField(read_only=True)
     readBy = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    date =  serializers.DateTimeField()
 
     class Meta:
         model = Message
@@ -16,3 +17,6 @@ class MessageSerializer(serializers.ModelSerializer):
     
     def get_readByAll(self, obj):
         return obj.readBy.count() == obj.idGroup.participants.count()
+    
+    def get_date(self, obj):
+        return obj.date

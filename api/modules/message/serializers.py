@@ -6,7 +6,7 @@ class MessageSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='idSentBy.name')
     readByAll = serializers.SerializerMethodField(read_only=True)
     readBy = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
-    date =  serializers.DateTimeField()
+    date =  serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Message

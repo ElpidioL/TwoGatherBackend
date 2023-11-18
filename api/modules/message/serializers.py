@@ -20,3 +20,8 @@ class MessageSerializer(serializers.ModelSerializer):
     
     def get_date(self, obj):
         return obj.date
+    
+class MessageReadBySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = 'readBy'

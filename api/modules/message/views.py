@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponseBadRequest
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import CreateAPIView, UpdateAPIView
-from api.modules.message.serializers import MessageSerializer
+from api.modules.message.serializers import MessageSerializer, MessageReadBySerializer
 from group.models import Message, Group
 from user.models import User
 import uuid
@@ -55,7 +55,7 @@ class MessageUpdateView(UpdateAPIView):
 
 class MessageUpdateAddReadByView(UpdateAPIView):
     queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+    serializer_class = MessageReadBySerializer
     permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):

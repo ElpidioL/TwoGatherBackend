@@ -24,4 +24,4 @@ class MessageSerializer(serializers.ModelSerializer):
 class MessageReadBySerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = 'readBy'
+        fields = ['readBy']

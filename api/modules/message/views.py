@@ -59,7 +59,7 @@ class MessageUpdateAddReadByView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_update(self, serializer):
-        participants = self.request.data.getlist('readBy', [])
+        participants = self.request.POST.getlist('readBy', [])
         instance = serializer.instance
         participants_list = User.objects.filter(id__in=participants)
         instance.readBy.add(*participants_list)
